@@ -1,43 +1,63 @@
 pipeline {
     agent any
-    triggers {
-        pollSCM('*/1 * * * *')
+    triggers { 
+        pollSCM('*/1 * * * *') 
     }
     stages { 
         stage('build') {
             steps {
-                echo "Building node application" 
+                echo "Building node application"
             }
         }
         stage('deploy-dev') {
             steps {
-                echo "Building node DEV" 
+                script{
+                    deploy("dev")
+                }
             }
         }
         stage('test-dev') {
             steps {
-                echo "Testiong node DEV" 
+                script{
+                    test("dev")
+                }
             }
         }
-        stage('test-dev4') {
+        stage('deploy-int') {
             steps {
-                echo "Testiong node DEV" 
+                script{
+                    deploy("int")
+                }
             }
         }
-        stage('test-dev5') {
+        stage('test-int') {
             steps {
-                echo "Testiong node DEV" 
+                script{
+                    test("dev")
+                }
             }
         }
-        stage('test-dev6') {
+        stage('deploy-prd') {
             steps {
-                echo "Testiong node DEV" 
+                script{
+                    deploy("prd")
+                }
             }
         }
-        stage('test-dev7') {
+        stage('test-prd') {
             steps {
-                echo "Testiong node DEV" 
+                script{
+                    test("dev")
+                }
             }
         }
     }
+}
+
+def deploy(String environment){
+    echo "Deployment to ${environment} triggered.."
+}
+
+def test(String environment){
+    echo "Running tests to ${environment}.."
 }
